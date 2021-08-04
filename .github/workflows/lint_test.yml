@@ -162,11 +162,6 @@ jobs:
       - name: Run tests and generate coverage report
         run: pytest -n auto --cov --disable-warnings -q
 
-      # This step will publish the coverage reports to codecov.io and
-      # print a "job" link in the output of the GitHub Action
-      - name: Publish coverage report to codecov.io
-        run: codecov
-
   artifact:
     name: Generate Artifact
     if: always()
