@@ -11,6 +11,7 @@ except ImportError:
 from copy import copy
 from dataclasses import dataclass
 from pathlib import Path
+from textwrap import wrap
 from typing import Any, Dict, List, Optional, Union, get_type_hints
 
 try:
@@ -45,11 +46,22 @@ class Config:
         while to_write:
             name, value = to_write.pop(0)
             default = value.default
-            if default is _UNSET:
-                continue
-            doc.add(name, value.default)
-        raise NotImplementedError()
-        # return doc.as_string()
+            print(name, value)
+            if isinstance(value._crve_type, type):
+                typename = value._crve_type.__name__
+            else:
+                typename = str(value._crve_type)
+            doc.add(tomlkit.comment("_cvredivider"))
+            doc.add(tomlkit.comment(f"({typename}): " + value.comment))
+            if default is not _UNSET:
+                doc.add(name, default)
+            else:
+                doc.add(tomlkit.comment(f"{name} = "))
+            if value.description:
+                for num, line in enumerate(wrap("Description: " + value.description)):
+                    doc.add(tomlkit.comment((" " if num else "") + line))
+
+        return doc.as_string().replace("# _cvredivider", "")
 
     def load(self) -> None:
         """Loads the configuration from all sources."""
