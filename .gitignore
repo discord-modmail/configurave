@@ -25,3 +25,6 @@ venv/
 
 # OS caches
 .DS_Store
+
+# Github runner caches
+.cache
