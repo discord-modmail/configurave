@@ -139,6 +139,7 @@ class ConfigEntry:
     default: Any = _UNSET
     comment: Optional[str] = None
     description: Optional[str] = None
+    _crve_type: type = None
     _crve_set_from: Source = None
 
 
@@ -180,9 +181,14 @@ def make_config(sources: List[Source]) -> callable:
 
         validate_sources(sources)
 
+        hints = get_type_hints(class_)
+
         for name, value in list(class_.__dict__.items()):
             if not isinstance(value, ConfigEntry):
                 continue
+
+            if name in hints:
+                value._crve_type = hints[name]
 
             new_attributes["_crve_configs"][name] = copy(value)
 
