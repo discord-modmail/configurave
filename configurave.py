@@ -11,7 +11,13 @@ except ImportError:
 from copy import copy
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Union, get_args, get_type_hints
+from typing import Any, Dict, List, Optional, Union, get_type_hints
+
+try:
+    from typing import get_args
+except ImportError:
+    # Python 3.7
+    get_args: callable = None
 
 _UNSET = object()  # sentinel
 
@@ -62,7 +68,11 @@ class Config:
                         hint = hints[name]
                         # Comma separated lists
                         if isinstance(hint, List):
-                            other_type = get_args(hint).pop()
+                            if get_args:
+                                other_type = get_args(hint).pop()
+                            else:
+                                # This is nonstandard but supports 3.7
+                                other_type = hint.__args__.pop()
                             value = [other_type(i) for i in value.split(",")]
                         else:
                             value = hints[name](value)
