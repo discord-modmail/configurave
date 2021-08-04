@@ -77,7 +77,7 @@ class Config:
                         else:
                             value = hints[name](value)
 
-                    self._crve_validate_entry(name, value, hints, source)
+                    self._crve_validate_entry(name, value, source)
                     setattr(self, name, value)
                     self._crve_configs[name]._crve_set_from = source
 
@@ -95,12 +95,12 @@ class Config:
                         entries.extend((name + "_" + subname, subvalue) for subname, subvalue in value.items())
                         continue
 
-                    self._crve_validate_entry(name, value, hints, source)
+                    self._crve_validate_entry(name, value, source)
                     setattr(self, name, value)
                     self._crve_configs[name]._crve_set_from = source
             elif callable(source):
                 for name, value in source(self):
-                    self._crve_validate_entry(name, value, hints, source)
+                    self._crve_validate_entry(name, value, source)
                     setattr(self, name, value)
                     self._crve_configs[name]._crve_set_from = source
             else:
@@ -116,16 +116,16 @@ class Config:
                     "The configuration entry %r needs to be set, but was never set in any of the sources loaded." % name
                 )
 
-    def _crve_validate_entry(self, name: str, value: Any, hints: dict, source: Source) -> None:
+    def _crve_validate_entry(self, name: str, value: Any, source: Source) -> None:
         """Validate that a given value fits a given configuration entry type and source."""
         if name not in self._crve_configs:
             # TODO: fuzzy match for typos
             raise ConfigError("The configuration entry %r is not an expected configuration value" % name)
 
-        if not isinstance(value, hints[name]):
+        if not isinstance(value, self._crve_configs[name]._crve_type):
             raise ConfigError(
                 "The configuration entry for %r must be of type %r, not %r with value %r"
-                % (name, hints[name], type(value), value)
+                % (name, self._crve_configs[name]._crve_type, type(value), value)
             )
 
         if self._crve_configs[name]._crve_set_from == source:
