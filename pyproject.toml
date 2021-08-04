@@ -15,7 +15,10 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.dependencies]
 python = "^3.7"
 toml = "^0.10.2"
-python-dotenv = "^0.19.0"
+python-dotenv = {version = "^0.19.0", optional = true}
+
+[tool.poetry.extras]
+dotenv = ["python-dotenv"]
 
 [tool.poetry.dev-dependencies]
 black = "^21.7b0"
