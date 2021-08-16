@@ -795,7 +795,7 @@ dotenv = ["python-dotenv"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "49882f60fe666027cec4d91a5b84441057e1c1aa142d1491201e8c91d6ca8579"
+content-hash = "20efc81cb3e2be314babd667291038c750d109102875333258c7e8921173d03a"
 
 [metadata.files]
 appdirs = [
