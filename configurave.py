@@ -25,6 +25,23 @@ _UNSET = object()  # sentinel
 Source = Union[str, callable]
 
 
+# TODO: Validation:
+# - Validators are either simple objects to compare against with `in`
+#    or callables, or strings that turn into callables by getattr() on the config object.
+# - Comment extraction: uncommented fields without the feature disabled in make_config
+#    should be extracted with `inspect` and decent errors. Comments precede the config
+#    value, we don't read past blank lines, and first line is label, remaining are descr.
+# - We should have a nice repr, indicating loaded state and sources.
+
+# TODO: document and test validation from above, now that it's written
+# TODO: better test harness
+# TODO: comment extraction for non-ce entries
+# TODO: Varying names for config items in config files ("Also named" maybe )
+# TODO: json loader, ini loader, yaml loader
+# TODO: Optional[] support
+# TODO: Literal[] and enum support
+
+
 class Config:
     """The configuration base class for all configurave."""
 
