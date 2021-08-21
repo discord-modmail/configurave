@@ -73,7 +73,7 @@ jobs:
       - name: Install dependencies using poetry
         run: |
           pip install poetry
-          poetry install --no-interaction --no-ansi
+          poetry install --no-interaction --no-ansi -E dotenv
 
       # This step caches our pre-commit environment. To make sure we
       # do create a new environment when our pre-commit setup changes,
@@ -152,7 +152,7 @@ jobs:
       - name: Install dependencies using poetry
         run: |
           pip install poetry
-          poetry install --no-interaction --no-ansi
+          poetry install --no-interaction --no-ansi -E dotenv
 
       # Run tests with pytest-cov to generate a coverage report
       # This is saved to ./.coverage to be used by codecov to link a
