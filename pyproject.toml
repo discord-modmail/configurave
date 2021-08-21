@@ -47,6 +47,8 @@ taskipy = "^1.6.0"
 
 [tool.taskipy.tasks]
 black = { cmd = "black --check .", help = "dry run of black" }
+pre_cov-server = "coverage html"
+cov-server = { cmd = "python -m http.server 8011 --bind 127.0.0.1 --directory htmlcov", help = "Start an http.server for viewing coverage data."}
 flake8 = { cmd = "python -m flake8", help = "Lints code with flake8" }
 lint = { cmd = "pre-commit run --all-files", help = "Checks all files for CI errors" }
 precommit = { cmd = "pre-commit install --install-hooks", help = "Installs the precommit hook" }

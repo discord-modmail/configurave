@@ -12,6 +12,10 @@ dist/
 .coverage
 .coverage.*
 coverage.xml
+coverage.json
+htmlcov/
+*.cover
+*.py,cover
 .pytest_cache/
 
 # Editors
