@@ -192,7 +192,7 @@ class ConfigError(Exception):
 
 def validate_sources(sources: List[Source]) -> None:
     """Validates that no sources are used without their handler installed."""
-    if "ENV" in sources and not load_dotenv:
+    if "ENV" in sources and load_dotenv is None:
         raise ConfigError(
             "Environment variables were specified as a source in the configuration setup,"
             " but dotenv is not importable."
