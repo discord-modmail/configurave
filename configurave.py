@@ -160,7 +160,7 @@ class Config:
             )
 
         if self._crve_configs[name]._crve_set_from == source:
-            raise ConfigError("The configuration entry %r has two entries within source %r" % (name, source))
+            raise ConfigError(f"The configuration entry {name!r} has two entries within source {source!r}")
 
         if self._crve_configs[name].validator:
             if callable(self._crve_configs[name].validator):
