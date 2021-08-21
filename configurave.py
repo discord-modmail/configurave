@@ -52,7 +52,7 @@ class Config:
                 typename = value._crve_type.__name__
             else:
                 typename = str(value._crve_type)
-            doc.add(tomlkit.comment("_cvredivider"))
+            doc.add(tomlkit.comment("<_cvredivider>"))
             doc.add(tomlkit.comment(f"({typename}): " + value.comment))
             if default is not _UNSET:
                 doc.add(name, default)
@@ -62,7 +62,7 @@ class Config:
                 for num, line in enumerate(wrap("Description: " + value.description)):
                     doc.add(tomlkit.comment((" " if num else "") + line))
 
-        return doc.as_string().replace("# _cvredivider", "")
+        return doc.as_string().replace("# <_cvredivider>", "")
 
     def load(self) -> None:
         """Loads the configuration from all sources."""
