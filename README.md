@@ -11,3 +11,50 @@ Values loaded from later sources override values provided by earlier sources. Ty
 While not currently functional, there are plans and code to write out a default configuration generated directly from the configurave decorated class with .defaults_toml().
 
 This project has undergone _MINIMAL_ testing and work. It is likely very buggy at this time. Stay tuned for more!
+
+Example usage:
+
+```py
+from typing import List
+
+from configurave import make_config, ConfigEntry as ce
+
+@make_config(sources=["tests/test-config/readme.toml"])
+class MyConfig:
+    site_root: str = ce(comment="The root url the site should be mounted on")
+    template_root: str = ce(comment="Directory under which templates should be found")
+    allowed_hosts: List[str] = ce(
+        comment="A comma separated list of hosts that we are permitted to server content to",
+        validator=lambda config, value: len(value) > 0,
+    )
+
+config = MyConfig()
+config.load()
+
+print(config.site_root, config.template_root, config.allowed_hosts[0], sep="\n")
+
+```
+
+This will load from a file that looks like:
+```toml
+template_root = "./templates"
+allowed_hosts = "mydomain.com,example.example,localhost:8080"
+
+[site]
+root = "/"
+```
+
+or
+
+```env
+TEMPLATE_ROOT="./templates"
+ALLOWED_HOSTS="mydomain.com,example.example,localhost:8080"
+SITE_ROOT="/"
+```
+
+and print:
+```
+/
+./templates
+["mydomain.com", "example.example", "localhost:8080"]
+```
