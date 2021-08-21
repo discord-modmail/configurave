@@ -144,6 +144,16 @@ class Config:
         if self._crve_configs[name]._crve_set_from == source:
             raise ConfigError("The configuration entry %r has two entries within source %r" % (name, source))
 
+        if self._crve_configs[name].validator:
+            if callable(self._crve_configs[name].validator):
+                self._crve_configs[name].validator(self, value)
+            else:
+                if value not in self._crve_configs[name].validator:
+                    raise ConfigError(
+                        "The configuration entry %r did not pass validation: value %r, options %r"
+                        % (name, value, self._crve_configs[name].validator),
+                    )
+
 
 @dataclass
 class ConfigEntry:
@@ -152,6 +162,7 @@ class ConfigEntry:
     default: Any = _UNSET
     comment: Optional[str] = None
     description: Optional[str] = None
+    validator: Optional[Union[Any, callable]] = None
     _crve_type: type = None
     _crve_set_from: Source = None
 
