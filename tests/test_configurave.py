@@ -33,6 +33,7 @@ def test_validate_sources_env_dotenv_not_installed():
         validate_sources(["ENV"])
 
 
+@pytest.mark.dependency(depends=["load_dotenv"])
 def test_everything():
     """We can create and load a configuration from our test config folder."""
     # TODO: split this up and write better tests
@@ -40,7 +41,7 @@ def test_everything():
     @make_config(
         sources=[  # in order of priority
             "tests/test-config/config.toml",
-            # "ENV",  # Temporarily disabled until we get optional dotenv test up and running
+            "ENV",  # Temporarily enabled, needs seperate optional dotenv test
         ]
     )
     class Config:
@@ -59,26 +60,3 @@ def test_everything():
     assert c.root_url == "test url"
 
     # print("Defaults toml file:\n" + c.generate_defaults())
-
-
-@pytest.mark.xfail(reason="Not finished.")
-@pytest.mark.dependency(depends=["load_dotenv"])
-def test_missing_config():
-    """Test an error is raised when a file does not exist."""
-
-    @make_config(
-        sources=[  # in order of priority
-            "tests/test-config/fake-config.toml",
-        ]
-    )
-    class Config:
-        """The test configuration for configurave."""
-
-        root_url: str = ce(
-            comment="The root url configuration for the application",
-            description="A long ass multiline description goes here about all the options"
-            " you could potentially decide upon using.",
-        )
-
-    c = Config()
-    c.load()
