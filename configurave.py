@@ -44,6 +44,7 @@ class Config:
 
         to_write = list(self._crve_configs.items())
         while to_write:
+            value: ConfigEntry
             name, value = to_write.pop(0)
             default = value.default
             print(name, value)
