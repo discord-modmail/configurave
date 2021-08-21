@@ -1,4 +1,9 @@
 import os
+from copy import copy
+from dataclasses import dataclass
+from pathlib import Path
+from textwrap import wrap
+from typing import Any, Callable, Dict, List, Optional, Union, get_type_hints
 
 import tomlkit
 
@@ -6,23 +11,17 @@ try:
     from dotenv import load_dotenv
 except ImportError:
     # Dotenv is not installed
-    load_dotenv: callable = None
-
-from copy import copy
-from dataclasses import dataclass
-from pathlib import Path
-from textwrap import wrap
-from typing import Any, Dict, List, Optional, Union, get_type_hints
+    load_dotenv: Callable = None
 
 try:
     from typing import get_args
 except ImportError:
     # Python 3.7
-    get_args: callable = None
+    get_args: Callable = None
 
 _UNSET = object()  # sentinel
 
-Source = Union[str, callable]
+Source = Union[str, Callable]
 
 
 # TODO: Validation:
@@ -49,7 +48,7 @@ class Config:
     _crve_configs: Dict[str, "ConfigEntry"]
     _crve_sources: List[Source]
 
-    def defaults_toml(self) -> None:
+    def defaults_toml(self) -> str:
         """Generate a toml string containing comments and default configuration."""
         doc = tomlkit.document()
 
@@ -179,7 +178,7 @@ class ConfigEntry:
     default: Any = _UNSET
     comment: Optional[str] = None
     description: Optional[str] = None
-    validator: Optional[Union[Any, callable]] = None
+    validator: Optional[Union[Any, Callable]] = None
     _crve_type: type = None
     _crve_set_from: Source = None
 
@@ -199,7 +198,7 @@ def validate_sources(sources: List[Source]) -> None:
         )
 
 
-def make_config(sources: List[Source]) -> callable:
+def make_config(sources: List[Source]) -> Callable:
     """
     Make the given class into a configurave configuration class.
 
