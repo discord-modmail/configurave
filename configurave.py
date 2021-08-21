@@ -39,6 +39,8 @@ Source = Union[str, Callable]
 # TODO: json loader, ini loader, yaml loader
 # TODO: Optional[] support
 # TODO: Literal[] and enum support
+# TODO: Move parsing from .load() and into __init__, taking sources then.
+# TODO: Accept file-like objects in sources list.
 
 
 class Config:
