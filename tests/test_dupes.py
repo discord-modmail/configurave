@@ -6,7 +6,7 @@ from configurave import ConfigError, make_config
 
 def test_toml_dupe_keys():
     """Test an error is raised when a file does not exist."""
-    import tomlkit
+    import atoml
 
     @make_config(
         sources=[  # in order of priority
@@ -23,5 +23,5 @@ def test_toml_dupe_keys():
         )
 
     c = Config()
-    with pytest.raises(tomlkit.exceptions.KeyAlreadyPresent):
+    with pytest.raises(atoml.exceptions.KeyAlreadyPresent):
         c.load()
