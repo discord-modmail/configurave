@@ -27,6 +27,7 @@ class MyConfig:
         comment="A comma separated list of hosts that we are permitted to server content to",
         validator=lambda config, value: len(value) > 0,
     )
+    token: str = ce(comment="The discord auth token", secret=True)
 
 config = MyConfig()
 config.load()

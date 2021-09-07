@@ -72,7 +72,9 @@ class Config:
                 typename = str(value._crve_type)
             doc.add(atoml.comment("<_cvredivider>"))
             doc.add(atoml.comment(f"({typename}): " + value.comment))
-            if default is not _UNSET:
+            if value.secret:
+                doc.add(name, "")
+            elif default is not _UNSET:
                 doc.add(name, default)
             else:
                 doc.add(atoml.comment(f"{name} = "))
@@ -181,6 +183,7 @@ class ConfigEntry:
     comment: Optional[str] = None
     description: Optional[str] = None
     validator: Optional[Union[Any, Callable]] = None
+    secret: bool = False
     _crve_type: type = None
     _crve_set_from: Source = None
 
