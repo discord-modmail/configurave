@@ -49,6 +49,7 @@ class Config:
     _crve_defaults_file: str
     _crve_configs: Dict[str, "ConfigEntry"]
     _crve_sources: List[Source]
+    loaded: bool = False
 
     def defaults_toml(self) -> str:
         """Generate a toml string containing comments and default configuration."""
@@ -140,6 +141,7 @@ class Config:
                 raise ConfigError("Invalid configuration source %r supplied" % source)
 
         self.validate_fully_configured()
+        self.loaded = True
 
     def validate_fully_configured(self) -> None:
         """Ensure every config value that needs a value has been set."""
