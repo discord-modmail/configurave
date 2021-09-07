@@ -1,11 +1,13 @@
+"""
+Apply basic tests to configurave config loading.
+
+Test a configuration is properly created and matches how it should.
+"""
+
 import pytest
 
 from configurave import ConfigEntry as ce
 from configurave import ConfigError, make_config
-
-"""
-Apply basic tests to configurave config loading.
-"""
 
 
 @pytest.mark.dependency(name="load_dotenv")
