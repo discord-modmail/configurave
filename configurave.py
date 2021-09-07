@@ -39,7 +39,6 @@ Source = Union[str, Callable]
 # TODO: json loader, ini loader, yaml loader
 # TODO: Optional[] support
 # TODO: Literal[] and enum support
-# TODO: Move parsing from .load() and into __init__, taking sources then.
 # TODO: Accept file-like objects in sources list.
 
 
@@ -50,6 +49,13 @@ class Config:
     _crve_configs: Dict[str, "ConfigEntry"]
     _crve_sources: List[Source]
     loaded: bool = False
+
+    def __init__(self, sources: Optional[List[Source]] = None, load_now: bool = True):
+        if sources:
+            self._crve_sources.extend(sources)
+
+        if load_now:
+            self.load()
 
     def defaults_toml(self) -> str:
         """Generate a toml string containing comments and default configuration."""
@@ -205,7 +211,7 @@ def validate_sources(sources: List[Source]) -> None:
         )
 
 
-def make_config(sources: List[Source]) -> Callable:
+def make_config(sources: Optional[List[Source]] = None) -> Callable:
     """
     Make the given class into a configurave configuration class.
 
@@ -218,6 +224,8 @@ def make_config(sources: List[Source]) -> Callable:
     :param sources: a list of files or other special sources (such as ENV) to load configuration from
     :return: a decorator that converts the wrapped class
     """
+    if not sources:
+        sources = []
 
     def wrapper(class_: type) -> type:
         new_attributes = {"_crve_sources": sources, "_crve_configs": {}}

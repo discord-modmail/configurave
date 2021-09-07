@@ -38,12 +38,7 @@ def test_everything():
     """We can create and load a configuration from our test config folder."""
     # TODO: split this up and write better tests
 
-    @make_config(
-        sources=[  # in order of priority
-            "tests/test-config/config.toml",
-            "ENV",  # Temporarily enabled, needs seperate optional dotenv test
-        ]
-    )
+    @make_config()
     class Config:
         """The test configuration for configurave."""
 
@@ -53,8 +48,12 @@ def test_everything():
             " you could potentially decide upon using.",
         )
 
-    c = Config()
-    c.load()
+    c = Config(
+        sources=[  # in order of priority
+            "tests/test-config/config.toml",
+            "ENV",  # Temporarily enabled, needs seperate optional dotenv test
+        ]
+    )
 
     assert "root_url" in str(c._crve_configs)
     assert c.root_url == "test url"

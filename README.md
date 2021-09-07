@@ -19,7 +19,7 @@ from typing import List
 
 from configurave import make_config, ConfigEntry as ce
 
-@make_config(sources=["tests/test-config/readme.toml"])
+@make_config()
 class MyConfig:
     site_root: str = ce(comment="The root url the site should be mounted on")
     template_root: str = ce(comment="Directory under which templates should be found")
@@ -29,8 +29,7 @@ class MyConfig:
     )
     token: str = ce(comment="The discord auth token", secret=True)
 
-config = MyConfig()
-config.load()
+config = MyConfig(sources=["tests/test-config/readme.toml"])
 
 print(config.site_root, config.template_root, config.allowed_hosts[0], sep="\n")
 

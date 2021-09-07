@@ -22,6 +22,6 @@ def test_toml_dupe_keys():
             " you could potentially decide upon using.",
         )
 
-    c = Config()
+    c = Config(load_now=False)
     with pytest.raises(atoml.exceptions.KeyAlreadyPresent):
         c.load()
