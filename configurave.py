@@ -80,7 +80,9 @@ class Config:
             doc.add(atoml.comment("<_cvredivider>"))
             doc.add(atoml.comment(f"({typename}): " + value.comment))
             if value.secret:
-                doc.add(name, "")
+                # This is slightly hacky, and uses the lack of multiline comment escapes to insert the empty key
+                # on a following line.
+                doc.add(atoml.comment(f"Secret: value will not be exported\n{name} ="))
             elif default is not _UNSET:
                 doc.add(name, default)
             else:
