@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "configurave"
-version = "0.1.0"
+version = "0.1.2"
 description = "A one-size-fits-all configuration scheme manager"
 authors = ["Bast <bast@fastmail.com>", "aru <genericusername414@gmail.com>"]
 readme = "README.md"
