@@ -141,7 +141,11 @@ class Config:
                     setattr(self, name, value)
                     self._crve_configs[name]._crve_set_from = source
             elif callable(source):
-                for name, value in source(self):
+                fetched = source(self)
+                if isinstance(fetched, dict):
+                    fetched = fetched.items()
+
+                for name, value in fetched:
                     self._crve_validate_entry(name, value, source)
                     setattr(self, name, value)
                     self._crve_configs[name]._crve_set_from = source
